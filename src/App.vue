@@ -38,11 +38,10 @@ const handleDeleteLocalStorage = () => {
   <header>
     <img
       alt="Vue logo"
-      class="logo"
+      class="logo heartBeat"
       src="./assets/logo.svg"
       width="125"
       height="125"
-      :class="{ heartBeat: true }"
     />
   </header>
 
@@ -50,20 +49,55 @@ const handleDeleteLocalStorage = () => {
     <input
       v-model="inputValue"
       @keyup.enter="handleClick"
-      placeholder="새로운 할 일을 입력하세요"
+      placeholder="새로운 할 일"
     />
     <button @click="handleClick">클릭</button>
     <button @click="handleDeleteLocalStorage">로컬 데이터 삭제</button>
     <ul>
-      <div v-for="(todo, index) of todos" :key="index">
+      <div class="todoWrapper" v-for="(todo, index) of todos" :key="index">
         <li>{{ todo }}</li>
-        <button @click="todos.splice(index, 1)">삭제</button>
+        <button @click="todos.splice(index, 1)">X</button>
       </div>
     </ul>
   </main>
 </template>
 
 <style scoped>
+ul {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 200px;
+}
+
+.todoWrapper {
+  color: hsla(160, 100%, 37%, 0.5);
+  border: 1px dashed hsla(160, 100%, 37%, 1);
+  margin: 10px 0px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  li {
+    list-style: none;
+    flex-grow: 1;
+  }
+  button {
+  }
+}
+
+input {
+  background: none;
+  color: hsla(160, 100%, 37%, 0.5);
+  padding: 5px;
+  outline: none;
+}
+
+button {
+  background: none;
+  color: hsla(160, 100%, 37%, 0.5);
+  font-weight: bold;
+}
+
 .spin {
   animation: spin 1s infinite linear;
 }
