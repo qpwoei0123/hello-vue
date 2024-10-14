@@ -31,6 +31,7 @@ onMounted(loadTodosFromLocalStorage);
 const handleDeleteLocalStorage = () => {
   localStorage.removeItem('todos');
   todos.value = [];
+  inputValue.value = '';
 };
 </script>
 
@@ -71,8 +72,8 @@ ul {
 }
 
 .todoWrapper {
-  color: hsla(160, 100%, 37%, 0.5);
-  border: 1px dashed hsla(160, 100%, 37%, 1);
+  color: hsla(160, 100%, 37%, 1);
+  border: 1px dashed hsla(160, 100%, 37%, 0.5);
   margin: 10px 0px;
   padding: 10px;
   display: flex;
@@ -96,18 +97,14 @@ button {
   background: none;
   color: hsla(160, 100%, 37%, 0.5);
   font-weight: bold;
+  outline: none;
 }
 
-.spin {
-  animation: spin 1s infinite linear;
-}
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.logo {
+  position: fixed;
+  z-index: -1;
+  opacity: 0.1;
+  translate: 50% -50%;
 }
 
 .heartBeat {
