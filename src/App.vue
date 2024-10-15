@@ -1,12 +1,14 @@
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue';
+import { ref, reactive, watch, onMounted, computed } from 'vue';
 import EcosystemIcon from './components/icons/IconEcosystem.vue';
 import CommunityIcon from './components/icons/IconCommunity.vue';
 import SupportIcon from './components/icons/IconSupport.vue';
+import { useMouse } from './hooks/mouse.js';
+
+const { x, y } = useMouse();
 
 let inputValue = ref('');
 const todos = ref(['뷰 이해하기']);
-const animationState = ref('');
 
 const handleClick = () => {
   const trimmedValue = inputValue.value.trim();
@@ -16,16 +18,16 @@ const handleClick = () => {
   }
 };
 
+// 로컬스토리지에 저장
 const saveTodosOnLocalStorage = () =>
   localStorage.setItem('todos', JSON.stringify(todos.value));
-
 watch(todos, saveTodosOnLocalStorage, { deep: true });
 
+// 마운트 시 로컬스토리지에서 데이터 가쟈오기
 const loadTodosFromLocalStorage = () =>
   JSON.parse(localStorage.getItem('todos')).length === 0
     ? console.log('로컬에 데이터 없음')
     : (todos.value = JSON.parse(localStorage.getItem('todos')));
-
 onMounted(loadTodosFromLocalStorage);
 
 const handleDeleteLocalStorage = () => {
@@ -39,10 +41,10 @@ const handleDeleteLocalStorage = () => {
   <header>
     <img
       alt="Vue logo"
-      class="logo heartBeat"
+      class="logo heartBeat dynamicStyles"
       src="./assets/logo.svg"
-      width="125"
-      height="125"
+      width="500"
+      height="500"
     />
   </header>
 
@@ -54,6 +56,7 @@ const handleDeleteLocalStorage = () => {
     />
     <button @click="handleClick">클릭</button>
     <button @click="handleDeleteLocalStorage">로컬 데이터 삭제</button>
+    <button class="corner">{{ x }},{{ y }}</button>
     <ul>
       <div class="todoWrapper" v-for="(todo, index) of todos" :key="index">
         <li>{{ todo }}</li>
@@ -104,11 +107,28 @@ button {
   position: fixed;
   z-index: -1;
   opacity: 0.1;
-  translate: 50% -50%;
+  transition: 0.5s ease-in-out;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+}
+
+.corner {
+  position: fixed;
+  z-index: 1;
+  top: 10px;
+  left: 10px;
+  background: none;
+  color: hsla(160, 100%, 37%, 1);
+  font-weight: bold;
+  outline: none;
+  padding: 20px;
+  font-size: 2rem;
+  min-width: 200px;
 }
 
 .heartBeat {
-  animation: heartBeat 10s infinite;
+  animation: heartBeat 60s infinite;
 }
 @keyframes heartBeat {
   0% {
@@ -116,10 +136,9 @@ button {
     rotate: 0deg;
   }
   50% {
-    transform: scale(0.5);
   }
   100% {
-    transform: scale(1);
+    transform: scale(0.5);
     rotate: 360deg;
   }
 }
