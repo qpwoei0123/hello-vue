@@ -36,12 +36,14 @@ const handleDeleteLocalStorage = () => {
 <template>
   <section @keyup.enter="handleClick">
     <input v-model="inputValue" placeholder="새로운 할 일" />
-    <button @click="handleClick">클릭</button>
+    <button @click="handleClick">Enter</button>
     <button @click="handleDeleteLocalStorage">로컬 데이터 삭제</button>
-    <button @click="() => (inputValue += '!')">+= !</button>
+    <button @click="() => (inputValue += '!')">input += !</button>
     <ul>
       <div class="todoWrapper" v-for="(todo, index) of todos" :key="index">
-        <li>{{ todo }}</li>
+        <li>
+          {{ todo }}
+        </li>
         <button @click="todos.splice(index, 1)">X</button>
       </div>
     </ul>
@@ -49,7 +51,10 @@ const handleDeleteLocalStorage = () => {
 </template>
 
 <style scoped>
-ul {
+section {
+  top: 10px;
+  right: 10px;
+  position: absolute;
   display: flex;
   flex-direction: column;
   padding: 0;
